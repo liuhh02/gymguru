@@ -11,16 +11,16 @@ from trainmodel import (generate_snippet, model_selector,
                         load_dataset, get_model_info, 
                         get_model_url, train_model)
 
-st.set_page_config(page_title="Gym Guru", page_icon="💪", initial_sidebar_state="collapsed")
+st.set_page_config(page_title="Gym Guru", page_icon="💪")
 st.title("CMU Fitness Facility Capacity Dashboard")
 
-def _max_width_(prcnt_width:int = 75):
+def _max_width_(prcnt_width:int = 80):
     max_width_str = f"max-width: {prcnt_width}%;"
     st.markdown(f""" 
                 <style> 
                 .reportview-container .main .block-container{{{max_width_str}}}
                 .sidebar .sidebar-content {{
-                    width: 100px;
+                    width: 100;
                 }}
                 </style>    
                 """, 
@@ -187,10 +187,10 @@ elif pageview == "Visualize Some Cool Charts":
     dfdt = pd.Series(dfdt)
     cola, mid, colb = st.columns([10, 1, 10])
     with cola:
-        st.subheader("Crowd Distribution Across Days of the Week")
+        st.subheader("Crowd Distribution Across Days")
         fig = px.histogram(df, x="day_of_week",
-                   width=600, 
-                   height=500,
+                   width=500, 
+                   height=400,
                    y="number_people", histfunc='sum',
                    color_discrete_map={
                        "Monday": "RebeccaPurple", "Sunday": "lightsalmon",
@@ -213,8 +213,8 @@ elif pageview == "Visualize Some Cool Charts":
     with colb:
         st.subheader("Crowd Distribution Across Time")
         fig = px.histogram(df, x="hour",
-                   width=600, 
-                   height=500,
+                   width=500, 
+                   height=400,
                    y="number_people", histfunc='sum',
                    template="simple_white"
                    )
