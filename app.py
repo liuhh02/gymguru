@@ -48,8 +48,8 @@ def time_to_seconds(time):
     return time.hour * 3600 + time.minute * 60 + time.second
 
 def user_input_data():
-    date = st.date_input("Day of Visit", datetime.date(2021, 10, 3))
-    time = st.time_input('Time of Visit', datetime.time(14, 00))
+    date = st.date_input("Day of Visit", datetime.date(2021, 10, 4))
+    time = st.time_input('Time of Visit', datetime.time(16, 30))
     #month = date.month
     #day = date.day
     startsem = 0
