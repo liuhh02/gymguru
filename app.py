@@ -10,6 +10,9 @@ import calplot
 from trainmodel import (generate_snippet, model_selector, 
                         load_dataset, get_model_info, 
                         get_model_url, train_model)
+from sklearn import tree
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 st.set_page_config(page_title="Gym Guru", page_icon="💪")
 st.title("CMU Fitness Facility Capacity Dashboard")
@@ -48,8 +51,8 @@ def time_to_seconds(time):
     return time.hour * 3600 + time.minute * 60 + time.second
 
 def user_input_data():
-    date = st.date_input("Day of Visit", datetime.date(2021, 10, 2))
-    time = st.time_input('Time of Visit', datetime.time(8, 00))
+    date = st.date_input("Day of Visit", datetime.date(2021, 10, 3))
+    time = st.time_input('Time of Visit', datetime.time(14, 00))
     #month = date.month
     #day = date.day
     startsem = 0
@@ -309,6 +312,7 @@ elif pageview == "Build my Own Prediction Model":
     st.subheader("Test My Model")
     model_testing_container = st.expander("Does your model have what it takes? Put it to the test!", False)
     with model_testing_container:
+    #if (st.button("Does your model have what it takes? Put it to the test!")):
         daydict = {1: 'Monday', 2: 'Tuesday', 3: 'Wednesday', 4: 'Thursday', 5: 'Friday', 6: 'Saturday', 7: 'Sunday'}
         df=user_input_data()
         if st.button('Predict!'):
@@ -335,5 +339,3 @@ elif pageview == "Build my Own Prediction Model":
                 st.write("The gym seems relatively crowded, you can try going but maybe change up your plans a little?")
             else:
                 st.write("The gym seems to be pretty crowded at that time, maybe visit it at another time?")
-
-
