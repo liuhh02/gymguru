@@ -109,7 +109,7 @@ if pageview == "Check Current Crowd Levels":
     st.subheader('Current Crowd Levels')
     st.write("")
     #today = datetime.date.today()
-    now = datetime.datetime.now() - datetime.timedelta(hours=3, minutes=0)
+    now = datetime.datetime.now() - datetime.timedelta(hours=4, minutes=0)
     currday = now.strftime("%B %d, %Y")
     currtime = now.strftime("%I: %M %p")
 
