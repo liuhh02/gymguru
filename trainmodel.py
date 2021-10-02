@@ -110,39 +110,3 @@ def get_model_url(model_type):
     model_url = model_urls[model_type]
     text = f"**Link to scikit-learn official documentation [here]({model_url}) 💻 **"
     return text
-
-def testmodel(model):
-    model_testing_container = st.expander("Test my model!", True)
-    with model_testing_container:
-        model_type = st.selectbox(
-            "Choose a model",
-            (
-                "Decision Tree",
-                "Random Forest",
-                "Gradient Boosting",
-                "Neural Network",
-                "k-Nearest Neighbors",
-                "Linear Regression"
-            ),
-        )
-
-        if model_type == "Linear Regression":
-            model = lr_param_selector()
-            
-        elif model_type == "Decision Tree":
-            model = dt_param_selector()
-            
-        elif model_type == "Random Forest":
-            model = rf_param_selector()
-
-        elif model_type == "Gradient Boosting":
-            model = gb_param_selector()
-            
-        elif model_type == "Neural Network":
-            model = nn_param_selector()
-            
-        elif model_type == "k-Nearest Neighbors":
-            model = knn_param_selector()
-            
-    return model_type, model
-
