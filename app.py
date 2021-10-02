@@ -98,7 +98,7 @@ elif pageview == "Plan my Workout":
     daydict = {1: 'Monday', 2: 'Tuesday', 3: 'Wednesday', 4: 'Thursday', 5: 'Friday', 6: 'Saturday', 7: 'Sunday'}
     df=user_input_data()
     #model = pickle.load(open('rf.pkl', 'rb'))
-    model = joblib.load("./rf.pkl")
+    model = joblib.load("./rf.joblib")
     scaler = pickle.load(open('scaler.pkl', 'rb'))
     if st.button('Predict!'):
         semstatus = 'School Semester'
