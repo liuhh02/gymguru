@@ -40,13 +40,12 @@ model_infos = {
         - If carefully tuned, gradient boosting can result in better performance than random forests
     """,
     "Neural Network": """
-        - Have great representational power but overfit on small datasets if not properly regularized
+        - Have great representational power but may overfit on small datasets if not properly regularized
         - Have many parameters that require fine-tuning
         - Computationally intensive on large datasets
     """,
     "k-Nearest Neighbors": """
         - Intuitive and simple
-        - KNNs don't build a model per se. They simply tag a new data based on the historical data
         - Become very slow as the dataset size grows
     """,
 }
