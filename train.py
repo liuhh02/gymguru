@@ -34,7 +34,7 @@ scaler = StandardScaler()
 scaler.fit(X_train)
 X_train = scaler.transform(X_train)
 X_test = scaler.transform(X_test)
-#pickle.dump(scaler, open('scaler.pkl','wb'))
+pickle.dump(scaler, open('scaler.pkl','wb'))
 
 model = RandomForestRegressor(n_jobs=-1)
 
