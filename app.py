@@ -211,7 +211,7 @@ elif pageview == "Visualize Some Cool Charts":
     roc = np.gradient(heatmap, edge_order = 2)[1]
     heatmapc = pd.DataFrame(roc, columns=heatmap.columns, index = heatmap.index)
 
-    fig = px.imshow(heatmapc, labels=dict(y="Day of Week", x="Time", color="Change in Crowd Levels"), color_continuous_scale="RdBu_r",
+    fig = px.imshow(heatmapc, labels=dict(y="Day of Week", x="Time", color="Change in Crowd Levels"), color_continuous_scale="RdBu_r", color_continuous_midpoint=0,
                     y=['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
                     x=['12am', '1am', '2am', '3am','4am','5am','6am','7am','8am','9am','10am','11am','12pm',
                     '1pm', '2pm', '3pm','4pm','5pm','6pm','7pm','8pm','9pm','10pm','11pm'], width=1000)
@@ -220,7 +220,7 @@ elif pageview == "Visualize Some Cool Charts":
 
     st.subheader("Calendar Heatmap")
     st.write("Lastly, let us also visualize the heatmap using a calendar. You can see that the data ends in March 2020, so let's collect more data after HackCMU and make this even better!")
-    fig, ax = calplot.calplot(dfdt, cmap='RdBu_r')
+    fig, ax = calplot.calplot(dfdt, cmap='YlGn')
     st.pyplot(fig)
 
 elif pageview == "Build my Own Prediction Model":
