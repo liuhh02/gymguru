@@ -29,6 +29,21 @@ def _max_width_(prcnt_width:int = 75):
 
 _max_width_()
 
+hide_footer_style = """
+    <style>
+    .reportview-container .main footer {visibility: hidden;}    
+    """
+st.markdown(hide_footer_style, unsafe_allow_html=True)
+
+hide_menu = """
+    <style>
+    #MainMenu {
+        visibility:hidden;
+    }
+    </style>
+"""
+st.markdown(hide_menu, unsafe_allow_html=True)
+
 def time_to_seconds(time):
     return time.hour * 3600 + time.minute * 60 + time.second
 
@@ -74,6 +89,21 @@ pageview = st.sidebar.selectbox(
     ("Check Current Crowd Levels", "Plan my Workout", 
     "Visualize Some Cool Charts", "Build my Own Prediction Model")
 )
+
+def footer():
+    st.sidebar.header("")
+    
+    st.sidebar.markdown("---")
+    st.sidebar.write("Made with ❤️ by Haohui for HackCMU")
+    # st.sidebar.markdown(
+    #     """
+    #     [<img src='data:image/png;base64,{}' class='img-fluid' width=25 height=25>](https://github.com/ahmedbesbes/playground) <small> Made with 0.1.0 | April 2021</small>""".format(
+    #         img_to_bytes("./images/github.png")
+    #     ),
+    #     unsafe_allow_html=True,
+    # )
+
+footer()
 
 if pageview == "Check Current Crowd Levels":
     st.subheader('Current Crowd Levels')
