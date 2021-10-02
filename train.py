@@ -5,10 +5,8 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
-import matplotlib.pyplot as plt
-
 from datetime import time
-import pickle
+import joblib
 
 def time_to_seconds(time):
     return time.hour * 3600 + time.minute * 60 + time.second
@@ -40,12 +38,11 @@ X_test = scaler.transform(X_test)
 
 model = RandomForestRegressor(n_jobs=-1)
 
-model.set_params(n_estimators=200)
+model.set_params(n_estimators=50)
 model.fit(X_train, y_train)
 
 print(model.score(X_test, y_test))
-# pickle.dump(model, open('rf.pkl', 'wb'))
-
+joblib.dump(model, "./rf.joblib", compress=3)
 
 # Predict on new test set
 # Columns needed: 'timestamp', 'day_of_week', 'is_weekend', 'is_holiday', 'temperature', 'is_start_of_semester', 'is_during_semester', 'month', 'hour'
@@ -73,4 +70,3 @@ print(topred)
 predicted = model.predict(topred)
 print(predicted)
 print(round(predicted[0], 0))
-#input contains: time, 
