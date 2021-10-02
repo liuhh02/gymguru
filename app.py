@@ -7,6 +7,9 @@ import datetime
 import pickle
 import joblib
 import calplot
+from trainmodel import (generate_snippet, model_selector, 
+                        load_dataset, get_model_info, 
+                        get_model_url, train_model)
 
 st.set_page_config(page_title="Gym Guru", page_icon="💪", initial_sidebar_state="collapsed")
 st.title("CMU Fitness Facility Capacity Dashboard")
@@ -243,3 +246,36 @@ elif pageview == "Visualize Some Cool Charts":
 elif pageview == "Build my Own Prediction Model":
     st.subheader("Train My Own Model!")
     st.write("Unconvinced by this model? Want to try your hand at training a more accurate model? Here's the place to do it!")
+    model_type, model = model_selector()
+    duration_placeholder = st.empty()
+    score_placeholder = st.empty()
+    model_url_placeholder = st.empty()
+    code_header_placeholder = st.empty()
+    snippet_placeholder = st.empty()
+    info_header_placeholder = st.empty()
+    info_placeholder = st.empty()
+
+    X_train, X_test, y_train, y_test = load_dataset()
+    
+    model_url = get_model_url(model_type)
+    (
+        model,
+        train_score,
+        test_score,
+        duration,
+    ) = train_model(model, X_train, y_train, X_test, y_test)
+
+    snippet = generate_snippet(model, model_type)
+
+    model_info = get_model_info(model_type)
+
+    duration_placeholder.warning(f"Training took {duration:.3f} seconds")
+    coltrain, coltest = score_placeholder.columns(2)
+    coltrain.metric("Training Score", train_score)
+    coltest.metric("Test Score", test_score, np.round(test_score-train_score, 3))
+    model_url_placeholder.markdown(model_url)
+    code_header_placeholder.header("**Retrain the same model in Python**")
+    snippet_placeholder.code(snippet)
+    info_header_placeholder.header(f"**Info on {model_type} 💡 **")
+    info_placeholder.info(model_info)
+    
