@@ -2,12 +2,11 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.express as px
-from plotly.subplots import make_subplots
 import plotly.graph_objects as go
-import matplotlib.pyplot as plt
 import datetime
 import pickle
 import joblib
+import calplot
 
 st.set_page_config(page_title="Gym Guru", page_icon="💪", initial_sidebar_state="collapsed")
 st.title("CMU Fitness Facility Capacity Dashboard")
@@ -132,5 +131,98 @@ elif pageview == "Plan my Workout":
 elif pageview == "Visualize Some Cool Charts":
     st.subheader('Analyze Historical Crowd Data')
     st.write("Unleash your inner geek and gain some insights on crowd data!")
-    
+    df = pd.read_csv('data.csv')
+    daydict = {0: 'Monday', 1: 'Tuesday', 2: 'Wednesday', 3: 'Thursday', 4: 'Friday', 5: 'Saturday', 6: 'Sunday'}
+    df['day_of_week'].replace(daydict, inplace=True)
+    df['date'] = pd.to_datetime(df['date'], utc=True)
+    dfdt = df.set_index('date')
+    dfdt = dfdt['number_people']
+    dfdt = pd.Series(dfdt)
+    cola, mid, colb = st.columns([10, 1, 10])
+    with cola:
+        st.subheader("Crowd Distribution Across Days of the Week")
+        fig = px.histogram(df, x="day_of_week",
+                   width=600, 
+                   height=500,
+                   y="number_people", histfunc='sum',
+                   color_discrete_map={
+                       "Monday": "RebeccaPurple", "Sunday": "lightsalmon",
+                       },
+                   template="simple_white", 
+                   category_orders={"day_of_week": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]}
+                   )
+        colors = ['lightgray',] * 7 
+        colors[6] = 'lightseagreen'
+        colors[5] = 'lightseagreen'
+        colors[1] = 'crimson'
+        colors[0] = 'crimson'
+        colors[2] = 'crimson'
 
+        fig.update_traces(marker_color=colors, marker_line_color='seagreen',
+                        marker_line_width=2.5, opacity=0.5)
+        st.write(fig)
+        st.write("We can see that the number of gym-goers generally decreases as the week progresses, with crowd levels markedly lower during the weekend.")
+
+    with colb:
+        st.subheader("Crowd Distribution Across Time")
+        fig = px.histogram(df, x="hour",
+                   width=600, 
+                   height=500,
+                   y="number_people", histfunc='sum',
+                   template="simple_white"
+                   )
+        # custom color
+        colors = ['lightgray',] * 24
+        colors[16] = 'crimson'
+        colors[17] = 'crimson'
+        colors[18] = 'crimson'
+        colors[19] = 'crimson'
+        colors[0] = 'lightseagreen'
+        colors[1] = 'lightseagreen'
+        colors[5] = 'lightseagreen'
+        colors[6] = 'lightseagreen'
+        colors[7] = 'lightseagreen'
+        colors[8] = 'lightseagreen'
+        colors[23] = 'lightseagreen'
+
+        fig.update_traces(marker_color=colors, marker_line_color='white',
+                        marker_line_width=2.5, opacity=0.5)
+                        
+        st.write(fig)
+        st.write("It seems like students generally prefer working out later in the day as compared to in the morning.")
+    st.title("Crowd Heatmap")
+    st.write("We may also visualize the heatmap to get more intuition about the data")
+
+    subset = df[['hour','number_people','day_of_week']]
+
+    #Group by time and day
+    heatmap = subset.groupby(['hour','day_of_week'], as_index = False).number_people.mean().pivot('day_of_week','hour', 'number_people').fillna(0)
+
+    fig = px.imshow(heatmap, labels=dict(y="Day of Week", x="Time", color="Average Crowd Levels"), color_continuous_scale="RdBu_r",
+                    y=['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+                    x=['12am', '1am', '2am', '3am','4am','5am','6am','7am','8am','9am','10am','11am','12pm',
+                    '1pm', '2pm', '3pm','4pm','5pm','6pm','7pm','8pm','9pm','10pm','11pm'], width=1000)
+    #fig.update_xaxes(side="top")
+    st.write(fig)
+    st.write("Again, this fits with our earlier observation that the gym is more crowded in the late afternoon with little traffic from 1am - 5am (which indicates the gym is closed)")
+    
+    st.subheader("Rate of Change of Crowd Levels")
+    st.write("Maybe we want to also visualize the rate of change of the crowd for each time of the day to gather when the gym is getting busier (we do this using our dear friend calculus; but don't worry you don't have to do the calculations yourself!)")
+    roc = np.gradient(heatmap, edge_order = 2)[1]
+    heatmapc = pd.DataFrame(roc, columns=heatmap.columns, index = heatmap.index)
+
+    fig = px.imshow(heatmapc, labels=dict(y="Day of Week", x="Time", color="Change in Crowd Levels"), color_continuous_scale="RdBu_r",
+                    y=['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+                    x=['12am', '1am', '2am', '3am','4am','5am','6am','7am','8am','9am','10am','11am','12pm',
+                    '1pm', '2pm', '3pm','4pm','5pm','6pm','7pm','8pm','9pm','10pm','11pm'], width=1000)
+    #fig.update_xaxes(side="top")
+    st.write(fig)
+
+    st.subheader("Calendar Heatmap")
+    st.write("Lastly, let us also visualize the heatmap using a calendar. You can see that the data ends in March 2020, so let's collect more data after HackCMU and make this even better!")
+    fig, ax = calplot.calplot(dfdt, cmap='RdBu_r')
+    st.pyplot(fig)
+
+elif pageview == "Build my Own Prediction Model":
+    st.subheader("Train My Own Model!")
+    st.write("Unconvinced by this model? Want to try your hand at training a more accurate model? Here's the place to do it!")
