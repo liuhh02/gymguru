@@ -1,4 +1,3 @@
-import numpy as np
 import pandas as pd
 
 from sklearn.ensemble import RandomForestRegressor
@@ -7,6 +6,7 @@ from sklearn.preprocessing import StandardScaler
 
 from datetime import time
 import joblib
+import pickle
 
 def time_to_seconds(time):
     return time.hour * 3600 + time.minute * 60 + time.second
@@ -34,7 +34,7 @@ scaler = StandardScaler()
 scaler.fit(X_train)
 X_train = scaler.transform(X_train)
 X_test = scaler.transform(X_test)
-# pickle.dump(scaler, open('scaler.pkl','wb'))
+#pickle.dump(scaler, open('scaler.pkl','wb'))
 
 model = RandomForestRegressor(n_jobs=-1)
 
@@ -45,7 +45,7 @@ print(model.score(X_test, y_test))
 joblib.dump(model, "./rf.joblib", compress=3)
 
 # Predict on new test set
-# Columns needed: 'timestamp', 'day_of_week', 'is_weekend', 'is_holiday', 'temperature', 'is_start_of_semester', 'is_during_semester', 'month', 'hour'
+# Columns needed: 'timestamp', 'day_of_week', 'is_weekend', 'is_holiday', 'is_start_of_semester', 'is_during_semester', 'month', 'hour'
 
 # Testing for Sanity Check that the Model Works
 time = time(1, 0, 0)
@@ -56,8 +56,8 @@ is_weekend = 1
 startsem = 0
 schoolsem = 1
 month = 9
+temperature = 70
 hour = time.hour
-temperature = 60
 
 data = {'timestamp': timestamp, 'day_of_week': day_of_week,
     'is_weekend': is_weekend, 'temperature': temperature, 'is_start_of_semester': startsem, 
