@@ -10,9 +10,6 @@ import calplot
 from trainmodel import (generate_snippet, model_selector, 
                         load_dataset, get_model_info, 
                         get_model_url, train_model)
-from sklearn import tree
-import matplotlib.pyplot as plt
-import seaborn as sns
 
 st.set_page_config(page_title="Gym Guru", page_icon="💪")
 st.title("CMU Fitness Facility Capacity Dashboard")
