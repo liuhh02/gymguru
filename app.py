@@ -38,19 +38,36 @@ pageview = st.sidebar.selectbox(
 
 if pageview == "Check Current Crowd Levels":
     st.subheader('Current Crowd Levels')
+    st.write("")
+    #today = datetime.date.today()
+    now = datetime.datetime.now()
+    currday = now.strftime("%B %d, %Y")
+    currtime = now.strftime("%I: %M %p")
+
+    st.metric(label="Time Now:", value=currday, delta = currtime)
+    st.write("")
+    st.write("")
     col1, mid, col2, mid2, col3 = st.columns([20,1,20,1,20])
     with col1:
-        st.write("Cohon University Center Fitness Center")
+        st.markdown("##### Cohon University Center Fitness Center")
         st.image('images/cuc.jpg', width=350)
         st.metric(label="Current Capacity", value="50/50", delta="8 in queue", delta_color="inverse")
         st.metric(label="Estimated Waiting Time", value="10 min")
+        st.markdown("#### Wiegand Gym")
+        st.image('images/wiegand.jpg', width=350)
+        st.metric(label="Current Capacity", value="24/50", delta="0 in queue")
+        st.metric(label="Estimated Waiting Time", value="0 min")
     with col2:
-        st.write("Tepper Fitness Center")
+        st.markdown("##### Tepper Fitness Center")
         st.image('images/tepper2.jpg', width=350)
         st.metric(label="Current Capacity", value="8/50", delta="0 in queue")
         st.metric(label="Estimated Waiting Time", value="0 min")
+        st.markdown("#### Skibo Gym")
+        st.image('images/skibo.jpg', width=350)
+        st.metric(label="Current Capacity", value="CLOSED", delta="FOR CONSTRUCTION", delta_color="inverse")
+        st.metric(label="Estimated Waiting Time", value="-")
     with col3:
-        st.write("Swimming & Diving Pool")
+        st.markdown("##### Swimming & Diving Pool")
         st.image('images/pool.jpg', width=350)
         st.metric(label="Current Capacity", value="12/50", delta="0 in queue")
         st.metric(label="Estimated Waiting Time", value="0 min")
@@ -59,7 +76,7 @@ elif pageview == "Plan my Workout":
     st.subheader('Predict Crowd Levels')
     st.write("Planning your visit to the gym? Enter the time you intend to go at and figure out how crowded the facility will likely be!")
     def user_input_data():
-        date = st.date_input("Day of Visit", datetime.date(2021, 10, 1))
+        date = st.date_input("Day of Visit", datetime.date(2021, 10, 2))
         time = st.time_input('Time of Visit', datetime.time(8, 00))
         #month = date.month
         #day = date.day
