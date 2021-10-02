@@ -7,9 +7,9 @@ import numpy as np
 import time
 
 from models.paramselector import (
-    lr_param_selector, dt_param_selector, 
-    rf_param_selector, gb_param_selector,
-    nn_param_selector, knn_param_selector)
+    lr_params, dt_params, 
+    rf_params, gb_params,
+    nn_params, knn_params)
 
 def model_selector():
     model_training_container = st.expander("Train a model", True)
@@ -27,22 +27,22 @@ def model_selector():
         )
 
         if model_type == "Linear Regression":
-            model = lr_param_selector()
+            model = lr_params()
             
         elif model_type == "Decision Tree":
-            model = dt_param_selector()
+            model = dt_params()
             
         elif model_type == "Random Forest":
-            model = rf_param_selector()
+            model = rf_params()
 
         elif model_type == "Gradient Boosting":
-            model = gb_param_selector()
+            model = gb_params()
             
         elif model_type == "Neural Network":
-            model = nn_param_selector()
+            model = nn_params()
             
         elif model_type == "k-Nearest Neighbors":
-            model = knn_param_selector()
+            model = knn_params()
             
     return model_type, model
 
@@ -56,9 +56,12 @@ def generate_snippet(model, model_type):
 
     >>> df = pd.read_csv('./data.csv')
     >>> data = df.values
-    >>> # X columns contain all the data except for the number of people
+    >>> # X columns contain data incuding whether the chosen date is during the start of
+    >>> # the semester / during school breaks, as well as whether it is a weekday etc. to
+    >>> # help predict occupancy levels
     >>> X = data[:, 1:]
-    >>> # Y column contains the number of people (which we want to predict)
+    >>> # Y column contains the crowd level at the corresponding point in time 
+    >>> # (which is what we want to predict)
     >>> y = data[:, 0]
     >>> # Split dataset into training & test so we can evaluate the model performance
     >>> X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25)
